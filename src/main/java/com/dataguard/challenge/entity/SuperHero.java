@@ -17,13 +17,13 @@ public class SuperHero implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long superHeroId;
 
-    @Column
+    @Column(nullable = false)
     private String alias;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private Set powers;
 
     @Column
