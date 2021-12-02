@@ -7,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -15,7 +16,7 @@ public class SuperHeroComponent {
     private SuperHeroRepository superHeroRepository;
 
     public void addSuperHero(SuperHero superHero) throws Exception {
-        if(checkAttributes(superHero)) {
+        if(checkAttributes(superHero) && superHero.getName().toUpperCase() != "BATMAN") {
             Optional<SuperHero> optionalSuperHero = superHeroRepository.
                     findByNameEqualsIgnoreCaseOrAliasEqualsIgnoreCase(superHero.getName(), superHero.getAlias());
 
@@ -27,10 +28,7 @@ public class SuperHeroComponent {
                 }
             }
         }
-        if (superHero.getName() == "Batman")
-            throw new Exception("Batman is just a rich man, he doesn't have powers! Iron Man is a hero because his armor. End of discussion :D");
-        else
-            throw new Exception("Not found name, alias or powers for this hero!");
+        throw new Exception("Not found name, alias or powers for this hero!");
     }
 
     public SuperHero updateSuperHero(SuperHero superHero, Long superHeroId) throws Exception {
@@ -42,23 +40,46 @@ public class SuperHeroComponent {
                 superHeroRepository.save(currentData);
                 return currentData;
             } else {
-                throw new NotFoundException("Super hero not found");
+                throw new NotFoundException("Superhero not found");
             }
         } catch (Exception e) {
             throw new Exception(e);
         }
     }
 
-    public void deleteSuperHero() {
-
+    // Please use this method only if you added Batman by mistake changing his name... Heroes are heroes even after die
+    public void deleteSuperHero(Long superHeroId) throws Exception {
+        try {
+            Optional<SuperHero> optionalSuperHero = superHeroRepository.findById(superHeroId);
+            if (optionalSuperHero.isPresent()) {
+                superHeroRepository.deleteById(superHeroId);
+            } else {
+                throw new NotFoundException("Was not possible to find a superhero with this ID");
+            }
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
-    public void findSuperHeroes() {
-
+    public List<SuperHero> findSuperHeroes() throws Exception {
+        try {
+            return superHeroRepository.findAll();
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
-    public void findSuperHeroByName() {
-
+    public SuperHero findSuperHeroByNameOrAlias(String name, String alias) throws Exception {
+        try {
+            Optional<SuperHero> optionalSuperHero = superHeroRepository.findByNameEqualsIgnoreCaseOrAliasEqualsIgnoreCase(name, alias);
+            if (optionalSuperHero.isPresent()) {
+               return optionalSuperHero.get();
+            } else {
+                throw new NotFoundException("Was not possible to find a superhero with this name or alias");
+            }
+        } catch (Exception e) {
+            throw new Exception(e);
+        }
     }
 
     public void findSuperHeroesByPower() {
