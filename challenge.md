@@ -4,7 +4,8 @@ Tech Test
 
 Please create an application that exposes at least two http endpoints to manage a superhero entity (Object Schema and examples provided below).
 
-```{
+```
+{
 alias: 'Captain Marvel',
 name: 'Carol Danvers',
 powers: ['photon-blast', 'flight', 'super-strength', 'healing'],
