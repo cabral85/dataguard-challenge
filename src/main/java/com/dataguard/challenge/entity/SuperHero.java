@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -24,16 +25,14 @@ public class SuperHero implements Serializable {
     private String name;
 
     @Column(nullable = false)
-    private Set powers;
+    private String[] powers;
 
     @Column
-    private Set weapons;
+    private String[] weapons;
 
-    @Column
     private String origin;
 
-    @Column
-    private Set associations;
+    private String[] associations;
 
     @Override
     public String toString() {
