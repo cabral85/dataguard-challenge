@@ -12,8 +12,6 @@ import java.util.Optional;
 public interface SuperHeroRepository extends JpaRepository<SuperHero, Long> {
     Optional<SuperHero> findByNameEqualsIgnoreCaseOrAliasEqualsIgnoreCase(String name, String alias);
 
-
-
     List<SuperHero> findByPowersIn(Collection<String[]> powers);
 
     List<SuperHero> findByWeaponsIn(Collection<String[]> weapons);

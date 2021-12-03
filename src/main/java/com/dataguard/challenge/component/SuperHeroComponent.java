@@ -7,7 +7,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -17,21 +16,20 @@ public class SuperHeroComponent {
     @Autowired
     private SuperHeroRepository superHeroRepository;
 
-    public void addSuperHero(SuperHero superHero) throws Exception {
+    public SuperHero addSuperHero(SuperHero superHero) throws Exception {
         if(checkAttributes(superHero)) {
             Optional<SuperHero> optionalSuperHero = superHeroRepository.
                     findByNameEqualsIgnoreCaseOrAliasEqualsIgnoreCase(superHero.getName(), superHero.getAlias());
 
             if (!optionalSuperHero.isPresent()) {
                 try {
-                    superHeroRepository.save(superHero);
+                    return superHeroRepository.save(superHero);
                 } catch (Exception e) {
                     throw new Exception(e.getMessage());
                 }
             }
-        } else {
-            throw new Exception("Not found name, alias or powers for this hero!");
         }
+        throw new Exception("Not found name, alias or powers for this hero!");
     }
 
     public SuperHero updateSuperHero(SuperHero superHero, Long superHeroId) throws Exception {
